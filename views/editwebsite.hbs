@@ -1,0 +1,102 @@
+{{!-- editwebsite.hbs --}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Websites</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="icon" href="/logo/favicon.ico" />
+
+</head>
+<body>
+    <div class="edit-container">
+        <h1>Edit Websites</h1>
+
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search by name..." onkeyup="filterList()">
+        </div>
+
+        <table class="website-table">
+            <thead>
+                <tr>
+                    <th>Icon</th>
+                    <th>Name</th>
+                    <th>URL</th>
+                    <th>Category</th>
+                    <th>Active</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="websiteList">
+                {{#each websites}}
+                <tr data-name="{{this.name}}">
+                    <td ><img src="{{this.url}}/favicon.ico" height="40px"></td>
+                    <td><input type="text" value="{{this.name}}" id="name-{{this.site_id}}"></td>
+                    <td><input type="text" value="{{this.url}}" id="url-{{this.site_id}}"></td>
+                    <td><input type="text" value="{{this.category}}" id="category-{{this.site_id}}"></td>
+                    <td>
+                        <select id="active-{{this.site_id}}">
+                            <option value="true" {{#if this.active}}selected{{/if}}>Yes</option>
+                            <option value="false" {{#unless this.active}}selected{{/unless}}>No</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button onclick="confirmUpdate({{this.site_id}})">Update</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+
+        let websites;
+
+        function filterList() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#websiteList tr');
+
+            rows.forEach(row => {
+                const name = row.getAttribute('data-name').toLowerCase();
+                row.style.display = name.includes(input) ? '' : 'none';
+            });
+        }
+
+        function confirmUpdate(site_id) {
+            const name = document.getElementById(`name-${site_id}`).value;
+            const url = document.getElementById(`url-${site_id}`).value;
+            const category = +document.getElementById(`category-${site_id}`).value;
+            const active = document.getElementById(`active-${site_id}`).value === 'true';
+            // const logo = document.getElementById(`logo-${site_id}`).value;
+
+            if (confirm(`Update details for "${name}"?`)) {
+                // You will handle the actual API request here
+                console.log('Updating:', { name, url, category, active });
+                const URL = "{{API_URL}}api/updatewebsite";
+                const data = {
+                    site_id, name, url, category, active
+                };
+                const options = {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+
+                fetch(URL, options)
+                    .then(async (response)=> {
+                        result = await response.json();
+                        console.log("Website updated successfully: ", result);
+                    })
+                    .catch((error)=>{
+                        console.log("Error: ", error)
+                    })
+            }
+        }
+
+
+    </script>
+</body>
+</html>

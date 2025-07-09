@@ -1,0 +1,100 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Website - FreeStreamHub</title>
+  <link rel="icon" href="/logo/favicon.ico" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+  <!-- Hero Section -->
+  <header class="hero">
+    <h1>Submit a New Website</h1>
+    <p>Help us grow the directory by adding new free streaming sites</p>
+  </header>
+
+  <!-- Add Website Form -->
+  <main class="sites-grid" style="max-width: 800px; margin: 2rem auto; padding: 2rem;">
+    <form action="/auth/addwebsite" method="post" id="addWebsiteForm" enctype="multipart/form-data">
+      {{#if errorMessage}}
+      <div id="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-triangle"></i>{{errorMessage}}
+        <span id="errorText"></span>
+      </div>
+      {{/if}}
+      {{#if successMessage}}
+      <div id="successMessage" class="success-message">
+        <i class="fas fa-check-circle"></i>
+        <span> {{successMessage}}</span>
+      </div>
+      {{/if}}
+
+      <!-- Website Name -->
+      <div class="form-group">
+        <label for="websiteName">Website Name</label>
+        <input type="text" id="websiteName" name="websiteName" required />
+      </div>
+
+      <!-- Website URL -->
+      <div class="form-group">
+        <label for="websiteUrl">Website URL</label>
+        <input type="url" id="websiteUrl" name="websiteUrl" required />
+      </div>
+
+      <!-- Image Upload -->
+      <div class="form-group">
+        <label for="websiteImage">Website Thumbnail (Optional)</label>
+        <input onchange="previewImage()" type="file" id="websiteImage" name="websiteImage" accept="image/*" />
+        <img id="preview" src="#" alt="Preview" style="display: none; height: 5rem" />
+      </div>
+
+      <!-- Website Type -->
+      <div class="form-group">
+        <label>Type of Website</label>
+        <div class="checkbox-group">
+          <label>
+            <input type="checkbox" name="websiteType" value="movies" />
+            <i class="fas fa-film"></i>
+            Movies &amp; Shows
+          </label>
+          <label>
+            <input type="checkbox" name="websiteType" value="anime" />
+            <i class="fas fa-dragon"></i>
+            Anime
+          </label>
+          <label>
+            <input type="checkbox" name="websiteType" value="sports" />
+            <i class="fas fa-tv"></i>
+            Sports
+          </label>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-group">
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-plus-circle"></i>
+          Add Website
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>⚠️ Disclaimer: We do not host any content. Verify the legality in your
+      region.</p>
+    <p>© 2023 FreeStreamHub. All links are curated for educational purposes.</p>
+  </footer>
+  <script>
+    function previewImage() {
+      const fileInput = document.getElementById('websiteImage'); const file = fileInput.files[0];
+      preview.style.display = 'block'; preview.src = URL.createObjectURL(file);
+    }
+  </script>
+</body>
+
+</html>

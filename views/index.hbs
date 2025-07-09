@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-B5RQLGPZJ5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-B5RQLGPZJ5");
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    FreeStreamHub - Free Movies, Anime & Sports Streaming Sites List
+  </title>
+  <meta name="description"
+    content="Discover the ultimate list of free streaming sites for movies, anime, and sports. Updated daily with 1000+ links to watch free content online." />
+  <meta name="keywords"
+    content="free movies, free anime, free sports streaming, streaming sites list, watch free movies online, free anime streaming, free sports streams" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://freestreamhub.vercel.app/" />
+  <meta property="og:title" content="FreeStreamHub - Free Movies, Anime & Sports Streaming Sites List" />
+  <meta property="og:description"
+    content="Discover 1000+ free streaming sites for movies, anime, and sports. Updated daily to bring you the latest free content online." />
+  <meta property="og:image" content="https://freestreamhub.vercel.app/images/og-banner.jpg" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://freestreamhub.vercel.app/" />
+  <meta property="twitter:title" content="FreeStreamHub - Free Movies, Anime & Sports Streaming Sites List" />
+  <meta property="twitter:description"
+    content="Discover 1000+ free streaming sites for movies, anime, and sports. Updated daily to bring you the latest free content online." />
+  <meta property="twitter:image" content="https://freestreamhub.vercel.app/images/twitter-banner.jpg" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://freestreamhub.vercel.app/" />
+  <link rel="icon" href="/logo/favicon.ico" />
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "FreeStreamHub",
+        "url": "https://freestreamhub.vercel.app/",
+        "description": "Discover the ultimate list of free streaming sites for movies, anime, and sports. Updated daily with 1000+ links to watch free content online.",
+        "keywords": [
+          "free movies",
+          "free anime",
+          "free sports streaming",
+          "streaming sites list"
+        ],
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://freestreamhub.vercel.app/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+
+  <link rel="stylesheet" href="/styles.css" />
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+  <div class="profile-box">
+    <button class="profile-btn">
+      <i class="fas fa-user"></i>
+      <span id="profileText">
+        {{#if user }}
+        {{ user.username }}
+        {{else}} Guest
+        {{/if}}
+      </span>
+      <i class="fas fa-caret-down"></i>
+    </button>
+    <div class="profile-menu">
+      {{#if user }}
+      <div id="userActions">
+        <a href="/signout" class="profile-link">
+          <i class="fas fa-sign-out-alt"></i> Sign Out
+        </a>
+        </button>
+      </div>
+      {{else}}
+      <div id="authLinks">
+        <a href="/signin" class="profile-link">
+          <i class="fas fa-sign-in-alt"></i> Sign In
+        </a>
+        <a href="/signup" class="profile-link">
+          <i class="fas fa-user-plus"></i> Sign Up
+        </a>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+
+  <!-- [Rest of the body content remains unchanged] -->
+  <!-- Hero Section -->
+  <header class="hero">
+    <h1>Stream Free Movies, Anime & Sports</h1>
+    <p>Discover 1000+ free streaming sites. Updated daily!</p>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for sites..." onkeyup="filterSites()"/>
+      <button id="search" onclick="filterSites()">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Categories Navigation -->
+  <nav class="categories">
+    <button class="active" onclick="filterCategory(this)" id="all">
+      All
+    </button>
+    <button onclick="filterCategory(this)" id="movies">Movies</button>
+    <button onclick="filterCategory(this)" id="anime">Anime</button>
+    <button onclick="filterCategory(this)" id="sports">Sports</button>
+  </nav>
+
+  <!-- Sites Grid -->
+  <main class="sites-grid" id="sitesGrid">
+    <!-- Dynamically populated by JavaScript -->
+    {{#each sites}}
+    <div class="site-card" data-site-name={{this.name}} data-category={{ this.category }}>
+      <a href="{{ this.url }}" target="_blank">
+        <img src="{{ this.logo_url }}" alt="{{ this.name }}">
+        <h3>{{ this.name }}</h3>
+      </a>
+      <div class="rating-container">
+        <div class="rating-stars" data-site-id="{{site_id}}" data-user-rated="{{not (isnull rating_username)}}">
+          {{#each (range 1 5)}}
+          <i
+            class="{{#if (gte ../rating this)}}fas fa-star{{else if (and (lt ../rating this) (gte ../rating (subtract this 0.5)))}}fas fa-star-half-alt{{else}}far fa-star{{/if}}"></i>
+          {{/each}}
+        </div>
+        <small>{{rating}} ({{no_of_ratings}})</small>
+        {{#if (isnull rating_username)}}
+        <button class="rate-button"
+          onclick="{{#if ../user }}rateSite({{site_id}}, '{{name}}'){{else}}signIn(){{/if}}">Rate It</button>
+        {{/if}}
+      </div>
+    </div>
+    {{/each}}
+  </main>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works">
+    <h2>How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <i class="fas fa-search"></i>
+        <h3>1. Search</h3>
+        <p>Find your favorite category.</p>
+      </div>
+      <div class="step">
+        <i class="fas fa-play"></i>
+        <h3>2. Click</h3>
+        <p>Visit the streaming site.</p>
+      </div>
+      <div class="step">
+        <i class="fas fa-film"></i>
+        <h3>3. Watch</h3>
+        <p>Enjoy free content!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>⚠️ Disclaimer: We do not host any content. For any copyright issue mail us at: freestreamhub@gmail.com</p>
+    <p>© 2023 FreeStreamHub. All links are curated for fun.</p>
+  </footer>
+  <div class="rating-modal" id="ratingModal">
+    <div class="rating-modal-content">
+      <span class="close-modal" onclick="closeRatingModal()">&times;</span>
+      {{#if user}}
+      <h3 id="rateTitle">Rate this website</h3>
+      <form action="/auth/rate" method="post">
+        <input type="hidden" id="site_id" name="site_id" required>
+        <div class="modal-rating-stars" id="modalStars">
+          {{#each (range 1 5)}}
+          <i class="far fa-star" data-value="{{this}}"></i>
+          {{/each}}
+        </div>
+        <input type="hidden" id="website_rating" name="rating" required>
+        <button class="submit-rating-btn" type="submit">Rate It</button>
+      </form>
+      {{else}}
+      <h3>Sign in to rate this website</h3>
+      <button onclick="location.href = '/signin'" class="submit-rating-btn">Sign In</button>
+      {{/if}}
+    </div>
+  </div>
+  <!-- JavaScript -->
+  <script src="/script.js"></script>
+</body>
+
+</html>

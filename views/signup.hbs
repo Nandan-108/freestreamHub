@@ -1,0 +1,86 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - FreeStreamHub</title>
+  <link rel="icon" href="/logo/favicon.ico" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+  <!-- Hero Section -->
+  <header class="hero">
+    <h1>Create Your Account</h1>
+    <p>Join our community to save preferences and submit websites</p>
+  </header>
+
+  <!-- Signup Form -->
+  <main class="sites-grid" style="max-width: 800px; margin: 2rem auto; padding: 2rem;">
+    <form action="/auth/signup" method="POST" id="signupForm">
+      {{#if errorMessage}}
+      <div id="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-triangle"></i>{{ errorMessage }}
+        <span id="errorText"></span>
+      </div>
+      {{/if}}
+      {{#if successMessage }}
+      <div id="successMessage" class="success-message">
+        <i class="fas fa-check-circle"></i>
+        <span> {{ successMessage }}</span>
+      </div>
+      {{/if}}
+
+      <!-- Username -->
+      <div class="form-group">
+        <label for="username">
+          <i class="fas fa-user"></i>
+          Username
+        </label>
+        <input type="text" id="username" name="username" required />
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">
+          <i class="fas fa-envelope"></i>
+          Email
+        </label>
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">
+          <i class="fas fa-lock"></i>
+          Password
+        </label>
+        <input type="password" id="password" name="password" required />
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-group">
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-user-plus"></i>
+          Create Account
+        </button>
+      </div>
+
+      <!-- Login Link -->
+      <p style="text-align: center; margin-top: 1rem;">
+        Already have an account?
+        <a href="/signin" style="color: #e50914;">Login here</a>
+      </p>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>⚠️ Disclaimer: We do not host any content. Verify the legality in your
+      region.</p>
+    <p>© 2023 FreeStreamHub. All links are curated for educational purposes.</p>
+  </footer>
+</body>
+
+</html>
